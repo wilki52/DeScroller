@@ -3,14 +3,24 @@
     "name": "de-scroll",
     "description": "reddit unhooker",
     "version": "1.0",
-    "permissions":["tabs", "activeTab", "webNavigation"],
-    "background": {
+    "permissions":["tabs", "activeTab", "webNavigation", "storage"],
 
-        "service_worker": "background.js"
-      },
+    "content_scripts":[
+      {
+        "matches":["https://*.reddit.com/*"],
+        "js":["content_script.js"]
+
+      }
+    ],
     "action": {
       "default_popup": "popup.html",
-      "default_icon": "cherrytime.png"
-    }
+      "default_icon": "descroll.png"
+    },
+    "web_accessible_resources": [
+      {
+        "resources": ["block.css", "blank.html"],
+        "matches": ["https://*.reddit.com/*"]
+      }
+    ]
     
   }
