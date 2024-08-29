@@ -1,4 +1,4 @@
-# DeScroller
+# Unscroll Reddit
 Unscroll Reddit: No more scrolling from reddit
 
 Automatically blocks subreddit pages, but does not block discussion threads.
