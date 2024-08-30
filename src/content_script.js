@@ -1,5 +1,7 @@
 console.log('content script');
 //init
+var on;
+
 onUrlChange();
 
 //mutation observer for DOM tree change
@@ -16,15 +18,15 @@ new MutationObserver(() => {
   }
 }).observe(document, {subtree: true, childList: true});
 
-var res;
+
 
 let read_status = async (on) => {
     return new Promise((resolve, reject) => {
         chrome.storage.local.get([on], function (result) {
             if (result[on] === undefined) {
-            reject();
+                reject();
             } else {
-            resolve(result[key]);
+                resolve(result[key]);
             }
       });
     });
@@ -69,12 +71,22 @@ async function onUrlChange() {
             blockSite();
         }
     }
+    else if (paths.length >3 && paths[3]=="settings"){
+
+    }
+    else if (paths.length >3 && paths[3]=="user"){
+        
+    }
     else{
-        //res = await get_status();
-        res = await get_status();
-        if (res==true){
+
+        on = await get_status();
+        if (on==true){
+            
             const list = await get_whitelist();
-            if (!list.includes(paths[4].toLowerCase())){
+            if (paths.length < 5){
+                blockSite();
+            }
+            else if (!list.includes(paths[4].toLowerCase())){
                 blockSite();
             }
         }
