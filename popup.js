@@ -6,6 +6,12 @@ console.log("This is a popup!");
 
 // var current_url;
 
+var button = document.querySelector(".logo");
+
+button.addEventListener("click", function(){
+    alert('hello');
+});
+
 // chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
 //     var activeTab = tabs[0];
 //     var activeTabId = activeTab.id; // or do whatever you need

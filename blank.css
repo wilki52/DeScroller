@@ -1,0 +1,20 @@
+body {
+    background-color: #ff5700;
+    display:flex;
+    align-items: center;
+    justify-content:  center;
+    margin:0;
+    height: 100vh;
+}
+
+.notif {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.desc{
+    color:white;
+    font-size:16px;
+}

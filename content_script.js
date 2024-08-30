@@ -26,11 +26,9 @@ function onUrlChange() {
 }
 
 function blockSite(){
-    var link = document.createElement('link');
-    link.className = "block";
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', chrome.runtime.getURL("block.css"));
-    document.head.appendChild(link);
+    window.location.replace(chrome.runtime.getURL("blank.html"));
+    //window.location = "blank.html";
+    return;
 }
 
 function removeBlocks(){

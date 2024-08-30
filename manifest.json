@@ -3,7 +3,7 @@
     "name": "de-scroll",
     "description": "reddit unhooker",
     "version": "1.0",
-    "permissions":["tabs", "activeTab", "webNavigation", "storage"],
+    "permissions":["tabs", "activeTab", "webNavigation", "storage", "webRequest"],
 
     "content_scripts":[
       {
@@ -14,7 +14,7 @@
     ],
     "action": {
       "default_popup": "popup.html",
-      "default_icon": "descroll.png"
+      "default_icon": "rebbit.png"
     },
     "web_accessible_resources": [
       {
