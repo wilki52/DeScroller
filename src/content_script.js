@@ -64,30 +64,20 @@ async function onUrlChange() {
     var paths = location.href.split('/');
 
     if ((/^https:\/\/(www\.)?reddit\.com\/.*\/comments\/.*/).test(location.href)){
-        //get array from storage.
         const list = await get_blacklist();
-        alert(list);
-        if (list.includes(paths[4])){
+        if (list.includes(paths[4].toLocaleLowerCase())){
             blockSite();
         }
-        //check if subreddit is in this array.
     }
     else{
         //res = await get_status();
         res = await get_status();
         if (res==true){
-            //get whitelist
             const list = await get_whitelist();
-            //check if subreddit in whitelist.
-            //alert(list+ " --- "+ paths[4]);
-
             if (!list.includes(paths[4].toLowerCase())){
                 blockSite();
             }
-
-            
         }
-        
     }
 }
 

@@ -25,11 +25,28 @@ async function remove_from_whitelist(subreddit){
 }
 
 async function add_to_blacklist(subreddit){
+    let list = await chrome.storage.local.get(["blacklist"]);
+    let blacklist = list.blacklist || [];
+    
+    if (blacklist.includes(subreddit)){
+        return 0;
+    }
+    blacklist.push(subreddit);
+    await chrome.storage.local.set({blacklist});
 
+    return 1;
 }
 
 async function remove_from_blacklist(subreddit){
+    let list = await chrome.storage.local.get(["blacklist"]);
+    let blacklist = list.blacklist || [];
+    
+    var index = blacklist.indexOf(subreddit);
+    if (index !== -1) {
+        blacklist.splice(index, 1);
+    }
 
+    await chrome.storage.local.set({blacklist});
 }
 
 
@@ -72,7 +89,7 @@ async function init(){
     let listb = await chrome.storage.local.get(["blacklist"]);
     listblack = listb.blacklist || [];
     listblack.forEach(element=>{
-
+        add_to_html_list(blacklist, element, "#black");
     });
 }
 async function on_button_click(){
@@ -95,8 +112,21 @@ async function on_button_click(){
         }
     });
     b_button.addEventListener("click", function(event){
-        add_to_html_list(blacklist, "#black");
-        
+        const input = document.querySelector("#black");
+        const val = input.value.toLowerCase();
+
+        var pass = true;
+        for (var i=0; i< blacklist.children.length; i++){
+            if ((val+"X") ==blacklist.children[i].textContent){
+                alert("subreddit already blacklisted");
+                pass = false;
+            }
+        }
+        if (pass){
+            add_to_blacklist(val);
+            add_to_html_list(blacklist, val, "#black");
+        }
+
     });
 }
 
