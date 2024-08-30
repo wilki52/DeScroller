@@ -15,13 +15,48 @@ new MutationObserver(() => {
   }
 }).observe(document, {subtree: true, childList: true});
 
+var res;
 
-function onUrlChange() {
+let read_status = async (on) => {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.get([on], function (result) {
+            if (result[on] === undefined) {
+            reject();
+            } else {
+            resolve(result[key]);
+            }
+      });
+    });
+  };
+
+  //it could be shorter but i wanted to use promises lol
+async function get_status() {
+    const promise = await new Promise(function(res, rej){
+        chrome.storage.local.get({'on': true}, (result)=>{
+            if (result.on===undefined){
+                
+                rej();
+            }
+            else{
+                res(result.on);
+            }
+        });
+    });
+    return promise;
+}
+
+async function onUrlChange() {
     console.log('URL changed!', location.href);
     if ((/^https:\/\/(www\.)?reddit\.com\/.*\/comments\/.*/).test(location.href)){
     }
     else{
-        blockSite();
+        //res = await get_status();
+        res = await get_status();
+        //alert("write: "+ res);
+        if (res==true){
+            blockSite();
+        }
+        
     }
 }
 
