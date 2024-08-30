@@ -26,8 +26,8 @@ function onUrlChange() {
 }
 
 function blockSite(){
-    window.location.replace(chrome.runtime.getURL("blank.html"));
-    //window.location = "blank.html";
+    window.location.replace(chrome.runtime.getURL("block_alert.html"));
+    //window.location = "block_alert.html";
     return;
 }
 

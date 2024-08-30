@@ -18,7 +18,7 @@
     },
     "web_accessible_resources": [
       {
-        "resources": ["styles/block.css", "blank.html"],
+        "resources": ["styles/block.css", "block_alert.html"],
         "matches": ["https://*.reddit.com/*"]
       }
     ]
