@@ -4,8 +4,9 @@ onUrlChange();
 
 //mutation observer for DOM tree change
 let lastUrl = location.href; 
+let url;
 new MutationObserver(() => {
-  const url = location.href;
+  url = location.href;
   console.log(lastUrl+ " vs "+ url + ".");
   if (url !== lastUrl) {
     lastUrl = url;
@@ -45,16 +46,46 @@ async function get_status() {
     return promise;
 }
 
+async function get_whitelist(){
+    let whitelist = await chrome.storage.local.get(["whitelist"]);
+    if (whitelist.whitelist == undefined) return [];
+    return whitelist.whitelist;
+
+}
+async function get_blacklist(){
+    let blacklist = await chrome.storage.local.get(["blacklist"]);
+    if (blacklist.blacklist==undefined) return [];
+    return blacklist.blacklist;
+}
+
 async function onUrlChange() {
     console.log('URL changed!', location.href);
+
+    var paths = location.href.split('/');
+
     if ((/^https:\/\/(www\.)?reddit\.com\/.*\/comments\/.*/).test(location.href)){
+        //get array from storage.
+        const list = await get_blacklist();
+        alert(list);
+        if (list.includes(paths[4])){
+            blockSite();
+        }
+        //check if subreddit is in this array.
     }
     else{
         //res = await get_status();
         res = await get_status();
-        //alert("write: "+ res);
         if (res==true){
-            blockSite();
+            //get whitelist
+            const list = await get_whitelist();
+            //check if subreddit in whitelist.
+            //alert(list+ " --- "+ paths[4]);
+
+            if (!list.includes(paths[4].toLowerCase())){
+                blockSite();
+            }
+
+            
         }
         
     }
@@ -62,7 +93,6 @@ async function onUrlChange() {
 
 function blockSite(){
     window.location.replace(chrome.runtime.getURL("block_alert.html"));
-    //window.location = "block_alert.html";
     return;
 }
 

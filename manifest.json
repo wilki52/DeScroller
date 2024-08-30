@@ -3,7 +3,7 @@
     "name": "de-scroll",
     "description": "reddit unhooker",
     "version": "1.0",
-    "permissions":["tabs", "activeTab", "webNavigation", "storage", "webRequest"],
+    "permissions":["tabs", "activeTab", "webNavigation", "storage"],
 
     "content_scripts":[
       {

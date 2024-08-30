@@ -35,7 +35,6 @@ var button = document.querySelector(".logo");
 init_logo();
 
 button.addEventListener("click", function(){
-    //alert('rebbit');
     if (button.classList.contains("on")) {
         turn_off(button);
     }
@@ -45,15 +44,15 @@ button.addEventListener("click", function(){
     
 });
 
-function turn_on(btn){
+async function turn_on(btn){
     btn.classList.remove("off");
     btn.classList.add("on");
-    chrome.storage.local.set({on : true})
+    await chrome.storage.local.set({on : true})
 }
-function turn_off(btn){
+async function turn_off(btn){
     btn.classList.remove("on");
     btn.classList.add("off");
-    chrome.storage.local.set({ on : false})
+    await chrome.storage.local.set({ on : false})
 }
 
 var edit_btn = document.querySelector(".edit-btn");
