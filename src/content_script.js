@@ -1,4 +1,3 @@
-console.log('content script');
 //init
 var on;
 
@@ -9,7 +8,6 @@ let lastUrl = location.href;
 let url;
 new MutationObserver(() => {
   url = location.href;
-  console.log(lastUrl+ " vs "+ url + ".");
   if (url !== lastUrl) {
     lastUrl = url;
     removeBlocks;
@@ -36,7 +34,7 @@ async function get_status() {
     const promise = await new Promise(function(res, rej){
         chrome.storage.local.get({'on': true}, (result)=>{
             if (result.on===undefined){
-                rej();
+                rej(result.off);
             }
             else{
                 res(result.on);
@@ -59,17 +57,24 @@ async function get_blacklist(){
 }
 
 async function onUrlChange() {
-    console.log('URL changed!', location.href);
     var paths = location.href.split('/');
 
     on = await get_status();
     if (on==false){
         return;
     }
-
     if ((/^https:\/\/(www\.)?reddit\.com\/.*\/comments\/.*/).test(location.href)){
         const list = await get_blacklist();
         if (list.includes(paths[4].toLocaleLowerCase())){
+            blockSite();
+        }
+    }
+    else if (paths.length>3 && paths[3]=="r"){
+        const list = await get_whitelist();
+        // if (paths.length < 5){ //the hell is tis for.
+        //     blockSite();
+        // }
+        if (!list.includes(paths[4].toLowerCase())){
             blockSite();
         }
     }
@@ -86,16 +91,10 @@ async function onUrlChange() {
         }
 
     }
-    else{
-        
-        const list = await get_whitelist();
-        if (paths.length < 5){
+    else{ //https://reddit.com has length 4. 
+        if (paths[3]==""){
             blockSite();
         }
-        else if (!list.includes(paths[4].toLowerCase())){
-            blockSite();
-        }
-        
     }
 }
 
