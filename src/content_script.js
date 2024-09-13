@@ -69,26 +69,24 @@ async function onUrlChange() {
             blockSite();
         }
     }
-    else if (paths.length>3 && paths[3]=="r"){
+    else if (paths[3]=="r"){
         const list = await get_whitelist();
-        // if (paths.length < 5){ //the hell is tis for.
-        //     blockSite();
-        // }
-        if (!list.includes(paths[4].toLowerCase())){
+        
+        if (paths.length >4 && paths[5]=="search"){
+            const list = await get_blacklist();
+            if (list.includes(paths[4].toLocaleLowerCase())){
+                blockSite();
+            }
+        }
+        else if (!list.includes(paths[4].toLowerCase())){
             blockSite();
         }
     }
-    else if (paths.length >3 && paths[3]=="settings"){
+    else if (paths[3]=="settings"){
 
     }
-    else if (paths.length >3 && paths[3]=="user"){
+    else if (paths[3]=="user"){
         
-    }
-    else if (paths.length >4 && paths[5]=="search"){
-        const list = await get_blacklist();
-        if (list.includes(paths[4].toLocaleLowerCase())){
-            blockSite();
-        }
 
     }
     else{ //https://reddit.com has length 4. 
