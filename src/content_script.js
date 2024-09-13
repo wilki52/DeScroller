@@ -14,7 +14,6 @@ new MutationObserver(() => {
     lastUrl = url;
     removeBlocks;
     onUrlChange();
-    
   }
 }).observe(document, {subtree: true, childList: true});
 
@@ -37,7 +36,6 @@ async function get_status() {
     const promise = await new Promise(function(res, rej){
         chrome.storage.local.get({'on': true}, (result)=>{
             if (result.on===undefined){
-                
                 rej();
             }
             else{
@@ -52,8 +50,8 @@ async function get_whitelist(){
     let whitelist = await chrome.storage.local.get(["whitelist"]);
     if (whitelist.whitelist == undefined) return [];
     return whitelist.whitelist;
-
 }
+
 async function get_blacklist(){
     let blacklist = await chrome.storage.local.get(["blacklist"]);
     if (blacklist.blacklist==undefined) return [];
@@ -62,8 +60,12 @@ async function get_blacklist(){
 
 async function onUrlChange() {
     console.log('URL changed!', location.href);
-
     var paths = location.href.split('/');
+
+    on = await get_status();
+    if (on==false){
+        return;
+    }
 
     if ((/^https:\/\/(www\.)?reddit\.com\/.*\/comments\/.*/).test(location.href)){
         const list = await get_blacklist();
@@ -77,19 +79,23 @@ async function onUrlChange() {
     else if (paths.length >3 && paths[3]=="user"){
         
     }
-    else{
-
-        on = await get_status();
-        if (on==true){
-            
-            const list = await get_whitelist();
-            if (paths.length < 5){
-                blockSite();
-            }
-            else if (!list.includes(paths[4].toLowerCase())){
-                blockSite();
-            }
+    else if (paths.length >4 && paths[5]=="search"){
+        const list = await get_blacklist();
+        if (list.includes(paths[4].toLocaleLowerCase())){
+            blockSite();
         }
+
+    }
+    else{
+        
+        const list = await get_whitelist();
+        if (paths.length < 5){
+            blockSite();
+        }
+        else if (!list.includes(paths[4].toLowerCase())){
+            blockSite();
+        }
+        
     }
 }
 
@@ -102,12 +108,5 @@ function removeBlocks(){
     var links = document.querySelectorAll(block);
     links.forEach(element=> {
         element && element.parentNode.removeChild(element);
-    });
-        
-}
-function blacklist(subreddit){
-
-}
-function whitelist(subreddit){
-    
+    });     
 }
