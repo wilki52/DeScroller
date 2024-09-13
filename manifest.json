@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "de-scroll",
-    "description": "reddit unhooker",
+    "name": "Unscroll Reddit",
+    "description": "Remove distractions by blocking subreddit feeds. Discussion threads are whitelisted for googling purposes.",
     "version": "1.0",
     "permissions":["tabs", "activeTab", "webNavigation", "storage"],
 
